@@ -34,9 +34,17 @@ import (
 // Antrian 15 membeli 1kg beras dengan kualitas [LOW]
 
 func main() {
-	var sizeQueue int
-	fmt.Printf("Masukkan jumlah antrian : ")
-	fmt.Scan(&sizeQueue)
+	var antrian int
+	fmt.Printf("Masukkan Jumlah Antrian : ")
+	fmt.Scan(&antrian)
 
-	// TODO: answer here
+	for i := 1; i <= antrian; i++ {
+		if i <= 5 {
+			fmt.Printf("Antrian %d membeli 1kg beras dengan kualitas [SUPER]\n", i)
+		} else if i >= 6 && i <= 10 {
+			fmt.Printf("Antrian %d membeli 1kg beras dengan kualitas [Medium]\n", i)
+		} else {
+			fmt.Printf("Antrian %d membeli 1kg beras dengan kualitas [Low]\n", i)
+		}
+	}
 }
