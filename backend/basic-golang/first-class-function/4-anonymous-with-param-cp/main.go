@@ -8,5 +8,8 @@ func main() {
 	//maka fungsi akan mengembalikan 9
 
 	// TODO: answer here
+	square := func(num int) int {
+		return num
+	}(3 * 3)
 	fmt.Println(square)
 }
