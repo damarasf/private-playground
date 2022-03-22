@@ -8,8 +8,10 @@ func main() {
 	// 	return x * y
 	// }
 	// TODO: answer here
-	getAreaFunc := func(x int, y int) func(int) int {
-		return func( int) int {}
+	getAreaFunc := func() func(int, int) int {
+		return func(x, y int) int {
+			return x * y
+		}
 	}
 	areaF := getAreaFunc()
 	res := areaF(3, 4) // 12
