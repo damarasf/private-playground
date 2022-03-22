@@ -92,76 +92,55 @@ func calculateHints(guess, answer string) (hints []hint) {
 
 func main() {
 	dictionary := getDictionaryWords()
-	isAllLowerCase := true
 
-	// TODO: answer here
+	//beginanswer
 	for len(dictionary) > 1 {
-		var guess, suggestHints string
+		var guess, coloredHints string
 		fmt.Printf("Guess: ")
 
 		fmt.Scanln(&guess)
 
 		fmt.Printf("Hint: ")
-		fmt.Scanln(&suggestHints)
+		fmt.Scanln(&coloredHints)
 
-		for _, c := range guess {
-			if !(c >= 'a' && c <= 'z') {
-				isAllLowerCase = false
-			}
-		}
-
-		if !isAllLowerCase {
-			fmt.Println("Please enter lowercase characters only")
-			continue
-		} else if len(guess) != wordLength {
-			fmt.Printf("Please enter exactly %d characters\n", wordLength)
-			continue
-		} else if len(guess) != len(suggestHints) {
-			fmt.Printf("Please enter exactly %d same as %d hints\n", len(guess), len(suggestHints))
-			continue
-		}
-
-		receiveHint := make([]hint, wordLength)
+		receivedHints := make([]hint, wordLength)
 		for i := 0; i < wordLength; i++ {
-			if suggestHints[i] == 'X' || suggestHints[i] == 'x' {
-				receiveHint[i] = notFound
-			} else if suggestHints[i] == 'Y' || suggestHints[i] == 'y' {
-				receiveHint[i] = correctLetter
-			} else if suggestHints[i] == 'G' || suggestHints[i] == 'g' {
-				receiveHint[i] = correctPosition
+			switch coloredHints[i] {
+			case 'X':
+				receivedHints[i] = notFound
+			case 'Y':
+				receivedHints[i] = correctLetter
+			case 'G':
+				receivedHints[i] = correctPosition
 			}
 		}
 
-		filterDictionary := make([]string, 0)
+		filteredDictionary := make([]string, 0)
 
-		//print match dictionary
 		for _, dict := range dictionary {
 			hints := calculateHints(guess, dict)
 			match := true
 
 			for i := 0; i < wordLength; i++ {
-				if hints[i] != receiveHint[i] {
+				if hints[i] != receivedHints[i] {
 					match = false
 					break
 				}
 			}
 
 			if match {
-				filterDictionary = append(filterDictionary, dict)
+				filteredDictionary = append(filteredDictionary, dict)
 			}
 		}
+		dictionary = filteredDictionary
 
-		fmt.Println("Possible Words:")
-		for _, dict := range filterDictionary {
+		fmt.Print("Possible words: ")
+		for _, dict := range dictionary {
 			fmt.Printf("%s ", dict)
 		}
 
-		dictionary = filterDictionary
-
 		fmt.Println()
-		fmt.Print("===============================================================")
 		fmt.Println()
-
 	}
 	//endanswer
 }
