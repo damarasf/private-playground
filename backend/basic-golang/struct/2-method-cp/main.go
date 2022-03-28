@@ -10,6 +10,18 @@ import "fmt"
 
 type Rectangle struct {
 	// TODO: answer here
+	Width  int
+	Length int
+}
+
+func (r Rectangle) GetArea() {
+	result := r.Width * r.Length
+	fmt.Printf("Luas Persegi Panjang : %d\n", result)
+}
+
+func (r Rectangle) GetPerimeter() {
+	result := 2 * (r.Length + r.Width)
+	fmt.Printf("Keliling Persegi Panjang : %d\n", result)
 }
 
 // TODO: answer here
