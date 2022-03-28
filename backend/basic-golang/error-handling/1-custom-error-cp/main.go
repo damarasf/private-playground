@@ -20,7 +20,7 @@ func (e *ErrorDataNotFound) Error() string {
 
 func GetAge(data map[string]int, name string) (int, error) {
 	if _, ok := data[name]; !ok {
-		return 0, errors.New("data not found")
+		return 0, errors.New("Data not found")
 	}
 
 	if data[name] < 0 {
