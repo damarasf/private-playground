@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	// "time"
+)
 
 func main() {
 	// Dari contoh yang telah diberikan, coba kamu handle error panic code dibawah ini, sehingga code dapat terus berjalan sampai akhir.
@@ -26,7 +29,11 @@ func main() {
 
 func printBook(i int) {
 	// TODO: answer here
-
+	defer func() {
+		if v := recover(); v != nil {
+			fmt.Printf("Panic error terdeteksi: %v \n", v)
+		}
+	}()
 	books := []string{
 		"The Eye of the World",
 		"The Great Hunt",
@@ -36,6 +43,10 @@ func printBook(i int) {
 	fmt.Printf("%v. Books  is: %v \n", i, books[i])
 }
 
-func deferring() {
-	// TODO: answer here
-}
+// func deferring() {
+// 	// TODO: answer here
+// 	// for {
+// 	// 	fmt.Println(printBook)
+// 	// 	time.Sleep(time.Second * 1)
+// 	// }
+// }
