@@ -13,5 +13,5 @@ func (a Account) GetBalance() int {
 
 func (a *Account) Deposit(amount int) {
 	// TODO: answer here
-
+	a.Balance += amount
 }
