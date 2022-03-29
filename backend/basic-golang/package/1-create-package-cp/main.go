@@ -20,3 +20,5 @@ func main() {
 	danaDarurat.Deposit(100)
 	fmt.Println(danaDarurat.GetBalance())
 }
+
+//done
