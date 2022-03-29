@@ -45,8 +45,7 @@ func printBook(i int) {
 
 func deferring() {
 	// TODO: answer here
-	// for {
-	// 	fmt.Println(printBook)
-	// 	time.Sleep(time.Second * 1)
-	// }
+	for i := 0; i < 10; i++ {
+		defer printBook(i)
+	}
 }
