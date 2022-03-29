@@ -45,7 +45,9 @@ func printBook(i int) {
 
 func deferring() {
 	// TODO: answer here
-	for i := 0; i < 10; i++ {
-		defer printBook(i)
-	}
+	// defer func() {
+	// 	if v := recover(); v != nil {
+	// 		fmt.Printf("Panic error terdeteksi: %v \n", v)
+	// 	}
+	// }()
 }
