@@ -11,7 +11,9 @@ import (
 
 func CountDays(start, end time.Time) int {
 	// TODO: answer here
-	return end.Day()
+	start = start.UTC()
+	end = end.UTC()
+	return int(end.Sub(start).Hours() / 24)
 }
 
 func main() {

@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // Dari contoh yang telah diberikan, kamu dapat mencoba untuk membuat interface dan mengimplementasikan interface.
 // Buatlah interface Employee yang memiliki method signature GetBonus() int
 // Buatlah implementasi interface Employee pada objek Manager, SeniorEngineer, dan JuniorEngineer.
@@ -21,4 +19,5 @@ func TotalEmployeeBonus(employees []Employee) int {
 func main() {
 	// Buatlah objek konkret untuk masing-masing objek dan panggil function TotalEmployeeBonus. Print total bonus untuk semua employee.
 	// TODO: answer here
+
 }

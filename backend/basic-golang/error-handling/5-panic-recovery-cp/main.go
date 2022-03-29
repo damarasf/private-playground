@@ -43,10 +43,10 @@ func printBook(i int) {
 	fmt.Printf("%v. Books  is: %v \n", i, books[i])
 }
 
-// func deferring() {
-// 	// TODO: answer here
-// 	// for {
-// 	// 	fmt.Println(printBook)
-// 	// 	time.Sleep(time.Second * 1)
-// 	// }
-// }
+func deferring() {
+	// TODO: answer here
+	// for {
+	// 	fmt.Println(printBook)
+	// 	time.Sleep(time.Second * 1)
+	// }
+}
