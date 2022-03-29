@@ -8,10 +8,10 @@ type Account struct {
 
 func (a Account) GetBalance() int {
 	// TODO: answer here
-	return a.GetBalance()
+	return a.Balance
 }
 
 func (a *Account) Deposit(amount int) {
 	// TODO: answer here
-	// return a.Deposit()
+
 }
