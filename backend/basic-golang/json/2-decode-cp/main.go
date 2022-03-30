@@ -24,39 +24,10 @@ type Leaderboard struct {
 
 func DecodeToLeaderboard(jsonData []byte) (Leaderboard, error) {
 	// TODO: answer here
-	leaderboard := Leaderboard{}
-	jsonData = []byte(`{
-		"Users":[
-		   {
-			  "name":"Roger",
-			  "Email":"
-			  "rank":1
-		   },
-		   {
-			  "name":"Tony",
-			  "Email":"
-			  "rank":2
-		   },
-		   {
-			  "name":"Bruce",
-			  "Email":"
-			  "rank":3
-		   },
-		   {
-			  "name":"Natasha",
-			  "Email":"
-			  "rank":4
-		   },
-		   {
-			  "name":"Clint",
-			  "Email":"
-			  "rank":5
-		   }
-		]
-		}`)
+	var leaderboard Leaderboard
 	err := json.Unmarshal(jsonData, &leaderboard)
 	if err != nil {
-		return leaderboard, err
+		return Leaderboard{}, err
 	}
 	return leaderboard, nil
 }
