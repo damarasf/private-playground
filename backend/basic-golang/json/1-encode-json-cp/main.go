@@ -17,6 +17,7 @@ type Meja struct {
 }
 
 func (m Meja) EncodeJSON() string {
+	// TODO: answer here
 	meja := NewMeja(Meja{Jenis: "Meja Belajar", Warna: "green", Jumlah: 2})
 	mejaJSON, err := json.Marshal(meja)
 	if err != nil {
