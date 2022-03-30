@@ -12,8 +12,8 @@ import (
 type Meja struct {
 	// TODO: answer here
 	Jenis  string `json:"jenis"`
-	Warna  string
-	Jumlah int `json:"jumlah"`
+	Warna  string `json:"color"`
+	Jumlah int    `json:"jumlah"`
 }
 
 func (m Meja) EncodeJSON() string {
