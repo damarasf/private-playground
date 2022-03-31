@@ -29,3 +29,5 @@ func (m Meja) EncodeJSON() string {
 func NewMeja(m Meja) Meja {
 	return m
 }
+
+//
