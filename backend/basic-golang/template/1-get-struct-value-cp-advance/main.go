@@ -17,6 +17,12 @@ type Student struct {
 
 func (s Student) CalculateScore(scores []float64) float64 {
 	// TODO: answer here
+	std := Student{Name: "Rogu", Scores: []float64{10, 11, 12}}
+	var total float64
+	for _, v := range std.Scores {
+		total += v
+	}
+	return total / float64(len(std.Scores))
 }
 
 func (s Student) GenerateStudentTemplate() string {
