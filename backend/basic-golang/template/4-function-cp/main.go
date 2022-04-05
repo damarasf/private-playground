@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 )
 
@@ -25,9 +26,30 @@ type Leaderboard struct {
 
 func CalculateScore(leaderboard Leaderboard) int {
 	// TODO: answer here
+	var total int
+	for _, user := range leaderboard.Users {
+		total += user.Score
+	}
+	return total
 }
 
 func ExecuteToByteBuffer(leaderboard Leaderboard) ([]byte, error) {
 	var textTemplate string
 	// TODO: answer here
+	for _, user := range leaderboard.Users {
+		textTemplate += fmt.Sprintf("%s: %d", user.Name, user.Score)
+	}
+
+	textTemplate += fmt.Sprintf("Total Score: %d", CalculateScore(leaderboard))
+	t, err := template.New("").Parse(textTemplate)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	err = t.Execute(&buf, leaderboard)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
