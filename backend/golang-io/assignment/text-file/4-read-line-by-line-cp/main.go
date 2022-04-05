@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -36,8 +37,9 @@ func ScanToMap(dataMap map[string]string, fileName string) error {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		data := scanner.Text()
-		dataMap[data] = data
+		line := scanner.Text()
+		data := strings.Split(line, ",")
+		dataMap[data[0]] = data[1]
 	}
 
 	return nil
