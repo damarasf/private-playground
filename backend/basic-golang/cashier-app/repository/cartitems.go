@@ -65,34 +65,12 @@ func (u *CartItemRepository) Save(cartItems []CartItem) error {
 }
 
 func (u *CartItemRepository) SelectAll() ([]CartItem, error) {
-	records, err := u.db.Load("cart_items")
+	cartItems, err := u.LoadOrCreate()
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]CartItem, 0)
-	for i := 1; i < len(records); i++ {
-		price, err := strconv.Atoi(records[i][2])
-		if err != nil {
-			return nil, err
-		}
-
-		qty, err := strconv.Atoi(records[i][3])
-		if err != nil {
-			return nil, err
-		}
-
-		cartItem := CartItem{
-			Category:    records[i][0],
-			ProductName: records[i][1],
-			Price:       price,
-			Quantity:    qty,
-		}
-		result = append(result, cartItem)
-	}
-
-	return result, nil
-
+	return cartItems, nil
 }
 
 func (u *CartItemRepository) Add(product Product) error {
@@ -101,24 +79,32 @@ func (u *CartItemRepository) Add(product Product) error {
 		return err
 	}
 
+	flag := false
+
 	for i := 0; i < len(cartItems); i++ {
 		if cartItems[i].ProductName == product.ProductName {
+			flag = true
 			cartItems[i].Quantity++
 			return u.Save(cartItems)
 		}
 	}
-	return u.Save(append(cartItems, CartItem{
-		Category:    product.Category,
-		ProductName: product.ProductName,
-		Price:       product.Price,
-		Quantity:    1,
-	}))
+	if flag == false {
+		cartItems = append(cartItems, CartItem{
+			Category:    product.Category,
+			ProductName: product.ProductName,
+			Price:       product.Price,
+			Quantity:    1,
+		})
+	}
+
+	return u.Save(cartItems)
 }
 
 func (u *CartItemRepository) ResetCartItems() error {
-	return u.db.Save("cart_items", [][]string{
+	records := [][]string{
 		{"category", "product_name", "price", "quantity"},
-	})
+	}
+	return u.db.Save("cart_items", records)
 }
 
 func (u *CartItemRepository) TotalPrice() (int, error) {
