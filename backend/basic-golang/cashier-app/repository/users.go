@@ -66,24 +66,18 @@ func (u UserRepository) Login(username string, password string) (*string, error)
 }
 
 func (u *UserRepository) FindLoggedinUser() (*string, error) {
-	users, err := u.LoadOrCreate()
+	users, err := u.SelectAll()
 	if err != nil {
 		return nil, err
 	}
 
 	for _, user := range users {
-		if user.Loggedin == true {
+		if user.Loggedin {
 			return &user.Username, nil
 		}
 	}
 
-	for _, user := range users {
-		if user.Loggedin == false {
-			return nil, errors.New("no user is logged in")
-		}
-	}
-
-	return nil, nil
+	return nil, errors.New("no user is logged in")
 }
 
 func (u *UserRepository) Logout(username string) error {
