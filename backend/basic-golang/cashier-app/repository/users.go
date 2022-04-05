@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/db"
 )
 
@@ -16,7 +18,7 @@ func (u *UserRepository) LoadOrCreate() ([]User, error) {
 	records, err := u.db.Load("users")
 	if err != nil {
 		records = [][]string{
-			{"username", "password", "logedin"},
+			{"username", "password", "loggedin"},
 		}
 		if err := u.db.Save("users", records); err != nil {
 			return nil, err
@@ -41,30 +43,43 @@ func (u *UserRepository) SelectAll() ([]User, error) {
 }
 
 func (u UserRepository) Login(username string, password string) (*string, error) {
-	users, err := u.SelectAll()
+	if err := u.LogoutAll(); err != nil {
+		return nil, err
+	}
+
+	users, err := u.LoadOrCreate()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, users := range users {
+		if users.Username == username && users.Password == password {
+			if err := u.changeStatus(username, true); err != nil {
+				return nil, err
+			}
+			return &users.Username, nil
+
+		}
+	}
+
+	return nil, errors.New("Login Failed")
+}
+
+func (u *UserRepository) FindLoggedinUser() (*string, error) {
+	users, err := u.LoadOrCreate()
 	if err != nil {
 		return nil, err
 	}
 
 	for _, user := range users {
-		if user.Username == username && user.Password == password {
-			u.changeStatus(username, true)
-			return &username, nil
+		if user.Loggedin == true {
+			return &user.Username, nil
 		}
 	}
 
-	return nil, nil
-}
-
-func (u *UserRepository) FindLoggedinUser() (*string, error) {
-	users, err := u.SelectAll()
-	if err != nil {
-		return nil, err
-	}
-
-	for i := 0; i < len(users); i++ {
-		if users[i].Loggedin {
-			return &users[i].Username, nil
+	for _, user := range users {
+		if user.Loggedin == false {
+			return nil, errors.New("no user is logged in")
 		}
 	}
 
@@ -72,22 +87,18 @@ func (u *UserRepository) FindLoggedinUser() (*string, error) {
 }
 
 func (u *UserRepository) Logout(username string) error {
-	users, err := u.LoadOrCreate()
+	users, err := u.FindLoggedinUser()
 	if err != nil {
 		return err
 	}
 
-	for i := 0; i < len(users); i++ {
-		if users[i].Username == username {
-			users[i].Loggedin = false
+	if *users == username {
+		if err := u.changeStatus(username, false); err != nil {
+			return err
 		}
 	}
 
-	if err := u.Save(users); err != nil {
-		return err
-	}
-
-	return u.Save(users)
+	return nil
 }
 
 func (u *UserRepository) Save(users []User) error {
