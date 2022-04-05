@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
 )
 
@@ -23,18 +24,17 @@ type Leaderboard struct {
 func ExecuteToByteBuffer(leaderboard Leaderboard) ([]byte, error) {
 	var textTemplate string
 	// TODO: answer here
-	for range leaderboard.Users {
-		textTemplate += "Peringkat ke-{{ .Rank }}: {{ .Name }}"
+	for _, user := range leaderboard.Users {
+		textTemplate += fmt.Sprintf("Peringkat ke-%d: %s", user.Rank, user.Name)
 	}
-
-	tmp, err := template.New("Template_1").Parse(textTemplate)
+	t, err := template.New("").Parse(textTemplate)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	var b bytes.Buffer
-	err = tmp.Execute(&b, leaderboard)
+	var buf bytes.Buffer
+	err = t.Execute(&buf, leaderboard)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return b.Bytes(), nil
+	return buf.Bytes(), nil
 }
