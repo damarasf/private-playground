@@ -14,8 +14,8 @@ import "encoding/json"
 type UserRank struct {
 	// TODO: answer here
 	Name  string `json:"name"`
-	Email string
-	Rank  int `json:"rank"`
+	Email string `json:"address,omitempty"`
+	Rank  int    `json:"rank"`
 }
 
 type Leaderboard struct {
