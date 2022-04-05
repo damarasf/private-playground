@@ -16,7 +16,7 @@ func (u *UserRepository) LoadOrCreate() ([]User, error) {
 	records, err := u.db.Load("users")
 	if err != nil {
 		records = [][]string{
-			{"username", "password", "status"},
+			{"username", "password", "logedin"},
 		}
 		if err := u.db.Save("users", records); err != nil {
 			return nil, err
@@ -84,7 +84,25 @@ func (u *UserRepository) Logout(username string) error {
 }
 
 func (u *UserRepository) Save(users []User) error {
-	return nil // TODO: replace this
+	record := [][]string{
+		{"username", "password", "loggedin"},
+	}
+
+	for _, user := range users {
+		newRow := []string{
+			user.Username, user.Password,
+		}
+
+		if user.Loggedin == true {
+			newRow = append(newRow, "true")
+		} else {
+			newRow = append(newRow, "false")
+		}
+
+		record = append(record, newRow)
+	}
+
+	return u.db.Save("users", record)
 }
 
 func (u *UserRepository) changeStatus(username string, status bool) error {
@@ -95,15 +113,15 @@ func (u *UserRepository) changeStatus(username string, status bool) error {
 
 	for i := 0; i < len(users); i++ {
 		if users[i].Username == username {
-			users[i].Loggedin = status
-			if err := u.Save(users); err != nil {
-				return err
-			}
-			return nil
+			users[i].Loggedin = true
 		}
 	}
 
-	return nil
+	if err := u.Save(users); err != nil {
+		return err
+	}
+
+	return u.Save(users)
 }
 
 func (u *UserRepository) LogoutAll() error {
@@ -120,5 +138,5 @@ func (u *UserRepository) LogoutAll() error {
 		return err
 	}
 
-	return nil // TODO: replace this
+	return u.Save(users)
 }
