@@ -18,6 +18,15 @@ func WriteToCSV(fileName string, records []Menu) error {
 	}
 	defer csvFile.Close()
 
+	csvWriter := csv.NewWriter(csvFile)
+	defer csvWriter.Flush()
+
+	for _, record := range records {
+		row := []string{record.Name, strconv.Itoa(record.Price)}
+		if err := csvWriter.Write(row); err != nil {
+			return err
+		}
+	}
 	// TODO: answer here
 	return nil
 }
