@@ -37,27 +37,19 @@ func (u *UserRepository) LoadOrCreate() ([]User, error) {
 }
 
 func (u *UserRepository) SelectAll() ([]User, error) {
-	users, err := u.LoadOrCreate()
-	if err != nil {
-		return nil, err
-	}
-
-	return users, nil
+	return u.LoadOrCreate()
 }
 
 func (u UserRepository) Login(username string, password string) (*string, error) {
-	users, err := u.LoadOrCreate()
+	users, err := u.SelectAll()
 	if err != nil {
 		return nil, err
 	}
 
-	for i := 0; i < len(users); i++ {
-		if users[i].Username == username && users[i].Password == password {
-			users[i].Loggedin = true
-			if err := u.Save(users); err != nil {
-				return nil, err
-			}
-			return &users[i].Username, nil
+	for _, user := range users {
+		if user.Username == username && user.Password == password {
+			u.changeStatus(username, true)
+			return &username, nil
 		}
 	}
 
@@ -65,7 +57,7 @@ func (u UserRepository) Login(username string, password string) (*string, error)
 }
 
 func (u *UserRepository) FindLoggedinUser() (*string, error) {
-	users, err := u.LoadOrCreate()
+	users, err := u.SelectAll()
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +72,22 @@ func (u *UserRepository) FindLoggedinUser() (*string, error) {
 }
 
 func (u *UserRepository) Logout(username string) error {
-	return nil // TODO: replace this
+	users, err := u.LoadOrCreate()
+	if err != nil {
+		return err
+	}
+
+	for i := 0; i < len(users); i++ {
+		if users[i].Username == username {
+			users[i].Loggedin = false
+		}
+	}
+
+	if err := u.Save(users); err != nil {
+		return err
+	}
+
+	return u.Save(users)
 }
 
 func (u *UserRepository) Save(users []User) error {
