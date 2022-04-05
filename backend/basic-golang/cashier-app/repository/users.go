@@ -13,28 +13,27 @@ func NewUserRepository(db db.DB) UserRepository {
 }
 
 func (u *UserRepository) LoadOrCreate() ([]User, error) {
-	// records, err := u.db.Load("users")
-	// if err != nil {
-	// 	records = [][]string{
-	// 		{"username", "password", "status"},
-	// 	}
-	// 	if err := u.db.Save("users", records); err != nil {
-	// 		return nil, err
-	// 	}
-	// }
+	records, err := u.db.Load("users")
+	if err != nil {
+		records = [][]string{
+			{"username", "password", "status"},
+		}
+		if err := u.db.Save("users", records); err != nil {
+			return nil, err
+		}
+	}
 
-	// result := make([]User, 0)
-	// for i := 1; i < len(records); i++ {
-	// 	user := User{
-	// 		Username: records[i][0],
-	// 		Password: records[i][1],
-	// 		Loggedin: records[i][2] == "true",
-	// 	}
-	// 	result = append(result, user)
-	// }
+	result := make([]User, 0)
+	for i := 1; i < len(records); i++ {
+		user := User{
+			Username: records[i][0],
+			Password: records[i][1],
+			Loggedin: records[i][2] == "true",
+		}
+		result = append(result, user)
+	}
 
-	return nil, nil
-	// return result, nil
+	return result, nil
 }
 
 func (u *UserRepository) SelectAll() ([]User, error) {
@@ -108,5 +107,18 @@ func (u *UserRepository) changeStatus(username string, status bool) error {
 }
 
 func (u *UserRepository) LogoutAll() error {
+	users, err := u.LoadOrCreate()
+	if err != nil {
+		return err
+	}
+
+	for i := 0; i < len(users); i++ {
+		users[i].Loggedin = false
+	}
+
+	if err := u.Save(users); err != nil {
+		return err
+	}
+
 	return nil // TODO: replace this
 }
