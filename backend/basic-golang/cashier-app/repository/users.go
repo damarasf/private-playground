@@ -1,9 +1,6 @@
 package repository
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/db"
 )
 

@@ -23,4 +23,18 @@ type Leaderboard struct {
 func ExecuteToByteBuffer(leaderboard Leaderboard) ([]byte, error) {
 	var textTemplate string
 	// TODO: answer here
+	for range leaderboard.Users {
+		textTemplate += "Peringkat ke-{{ .Rank }}: {{ .Name }}"
+	}
+
+	tmp, err := template.New("Template_1").Parse(textTemplate)
+	if err != nil {
+		panic(err)
+	}
+	var b bytes.Buffer
+	err = tmp.Execute(&b, leaderboard)
+	if err != nil {
+		panic(err)
+	}
+	return b.Bytes(), nil
 }
