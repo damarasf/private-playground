@@ -79,23 +79,19 @@ func (u *CartItemRepository) Add(product Product) error {
 		return err
 	}
 
-	flag := false
-
 	for i := 0; i < len(cartItems); i++ {
 		if cartItems[i].ProductName == product.ProductName {
-			flag = true
 			cartItems[i].Quantity++
 			return u.Save(cartItems)
 		}
 	}
-	if flag == false {
-		cartItems = append(cartItems, CartItem{
-			Category:    product.Category,
-			ProductName: product.ProductName,
-			Price:       product.Price,
-			Quantity:    1,
-		})
-	}
+
+	cartItems = append(cartItems, CartItem{
+		Category:    product.Category,
+		ProductName: product.ProductName,
+		Price:       product.Price,
+		Quantity:    1,
+	})
 
 	return u.Save(cartItems)
 }
