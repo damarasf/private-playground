@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/db"
 )
@@ -100,18 +101,12 @@ func (u *UserRepository) Save(users []User) error {
 		{"username", "password", "loggedin"},
 	}
 
-	for _, user := range users {
-		newRow := []string{
-			user.Username, user.Password,
-		}
-
-		if user.Loggedin == true {
-			newRow = append(newRow, "true")
-		} else {
-			newRow = append(newRow, "false")
-		}
-
-		record = append(record, newRow)
+	for i := 0; i < len(users); i++ {
+		record = append(record, []string{
+			users[i].Username,
+			users[i].Password,
+			strconv.FormatBool(users[i].Loggedin),
+		})
 	}
 
 	return u.db.Save("users", record)
@@ -125,12 +120,8 @@ func (u *UserRepository) changeStatus(username string, status bool) error {
 
 	for i := 0; i < len(users); i++ {
 		if users[i].Username == username {
-			users[i].Loggedin = true
+			users[i].Loggedin = status
 		}
-	}
-
-	if err := u.Save(users); err != nil {
-		return err
 	}
 
 	return u.Save(users)
