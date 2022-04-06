@@ -51,3 +51,5 @@ func (api *API) productList(w http.ResponseWriter, req *http.Request) {
 	// TODO: replace this
 
 }
+
+//done

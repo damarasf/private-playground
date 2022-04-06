@@ -44,3 +44,5 @@ func (api *API) logout(w http.ResponseWriter, req *http.Request) {
 
 	encoder.Encode(AuthErrorResponse{Error: username}) // TODO: replace this
 }
+
+//done

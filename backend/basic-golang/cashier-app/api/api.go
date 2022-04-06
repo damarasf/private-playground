@@ -27,7 +27,7 @@ func NewAPI(usersRepo repository.UserRepository, productsRepo repository.Product
 	mux.HandleFunc("/api/cart/add", api.addToCart)
 	// TODO: answer here
 	mux.HandleFunc("/api/cart/clear", api.clearCart)
-	mux.HandleFunc("/api/cart", api.cartList)
+	mux.HandleFunc("/api/carts", api.cartList)
 
 	return api
 }
@@ -40,3 +40,5 @@ func (api *API) Start() {
 	fmt.Println("starting web server at http://localhost:8080/")
 	http.ListenAndServe(":8080", api.Handler())
 }
+
+//done
