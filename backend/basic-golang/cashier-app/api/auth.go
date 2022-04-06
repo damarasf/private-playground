@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -27,14 +26,15 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Println(res)
+	w.WriteHeader(http.StatusOK)
 
-	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: ""}) // TODO: replace this
+	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: *res}) // TODO: replace this
 }
 
 func (api *API) logout(w http.ResponseWriter, req *http.Request) {
 	username := req.URL.Query().Get("username")
 	err := api.usersRepo.Logout(username)
+	encoder := json.NewEncoder(w)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		encoder := json.NewEncoder(w)
@@ -42,5 +42,5 @@ func (api *API) logout(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	encoder.Encode(AuthErrorResponse{Error: ""}) // TODO: replace this
+	encoder.Encode(AuthErrorResponse{Error: username}) // TODO: replace this
 }

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	// "github.com/ruang-guru/playground/backend/basic-golang/cashier-app/api"
+	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/api"
 	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/db"
 	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/repository"
 	"github.com/ruang-guru/playground/backend/basic-golang/cashier-app/terminal"
@@ -33,9 +33,9 @@ func main() {
 	case 2:
 		mainUI := ui.NewUI(usersRepo, productsRepo, cartItemRepo, transactionRepo)
 		mainUI.Start()
-	// case 3:
-	// 	mainAPI := api.NewAPI(usersRepo, productsRepo, cartItemRepo, transactionRepo)
-	// 	mainAPI.Start()
+	case 3:
+		mainAPI := api.NewAPI(usersRepo, productsRepo, cartItemRepo, transactionRepo)
+		mainAPI.Start()
 	default:
 		fmt.Println("Invalid choice")
 	}
