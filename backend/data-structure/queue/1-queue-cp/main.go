@@ -46,5 +46,16 @@ func main() {
 }
 
 func CountStudents(students []int, sandwiches []int) int {
-	0 // TODO: replace this
+	val := float64(students[0])
+	var count int
+	for i := 0; i < len(students); i++ {
+		if val == float64(sandwiches[i]) {
+			count++
+		}
+
+		if i+1 < len(students) {
+			val = float64(students[i+1])
+		}
+	}
+	return len(students) - count
 }
