@@ -45,5 +45,14 @@ func RotateLeft(d int, arr []int) []int {
 	for i := 0; i < d; i++ {
 		arr = append(arr[1:], arr[0])
 	}
+
+	// for i := 0; i < d; i++ {
+	// 	temp := arr[0]
+	// 	for j := 0; j < len(arr)-1; j++ {
+	// 		arr[j] = arr[j+1]
+	// 	}
+	// 	arr[len(arr)-1] = temp
+	// }
+
 	return arr
 }
