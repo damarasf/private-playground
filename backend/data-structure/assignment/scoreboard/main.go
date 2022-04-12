@@ -5,6 +5,18 @@ import (
 	"sort"
 )
 
+// # Scoreboard
+
+// Dalam penilaian ujian, nilai akhir adalah hasil dari perhitungan berikut:
+
+// Nilai = 4 x Jumlah Benar - 1 x Jumlah Salah`
+
+// Kita ingin mengurutkan hasil ujian siswa, urut berdasarkan nilai tertinggi ke terendah.
+// Jika ada yang nilainya sama, maka:
+// Yang `Jumlah Benar`-nya lebih tinggi akan diurutkan di atas.
+// Jika masih sama:
+// Yang `Nama`-nya lebih awal akan diurutkan di atas
+
 type Score struct {
 	Name    string
 	Correct int
@@ -18,7 +30,16 @@ func (s Scores) Len() int {
 }
 
 func (s Scores) Less(i, j int) bool {
-	return false // TODO: replace this
+	swapped := false
+	if s[i].Correct*4-s[i].Wrong*1 > s[j].Correct*4-s[j].Wrong*1 {
+		swapped = true
+	}
+	if s[i].Correct*4-s[i].Wrong*1 == s[j].Correct*4-s[j].Wrong*1 {
+		if s[i].Correct > s[j].Correct {
+			swapped = true
+		}
+	}
+	return swapped
 }
 
 func (s Scores) Swap(i, j int) {
