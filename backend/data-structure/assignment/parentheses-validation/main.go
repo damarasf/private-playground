@@ -26,4 +26,35 @@ import "github.com/ruang-guru/playground/backend/data-structure/assignment/paren
 
 func IsValidParentheses(s string) bool {
 	// TODO: answer here
+	if len(s)%2 != 0 || len(s) == 0 {
+		return false
+	}
+
+	parenthesesMap := map[rune]rune{
+		'(': ')',
+		'{': '}',
+		'[': ']',
+	}
+
+	stack := stack.Stack{
+		Top:  -1,
+		Data: []rune{},
+	}
+
+	for _, char := range s {
+		if closeParentheses, ok := parenthesesMap[char]; ok {
+			stack.Push(closeParentheses)
+			continue
+		}
+
+		if stack.IsEmpty() {
+			return false
+		}
+		popValue, _ := stack.Pop()
+		if popValue != char {
+			return false
+		}
+	}
+
+	return stack.IsEmpty()
 }
