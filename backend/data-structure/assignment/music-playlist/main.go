@@ -47,12 +47,56 @@ func NewMusicPlayer() MusicPlayer {
 
 func (mp *MusicPlayer) AddSong(song Song) {
 	// TODO: answer here
+	mp.Playlist.Songs = append(mp.Playlist.Songs, song)
+
+	fmt.Println("Add song to playlist")
+
+	fmt.Println("Songs in playlist:")
+
+	for _, song := range mp.Playlist.Songs {
+		fmt.Printf("%s - %s\n", song.Singer, song.Title)
+	}
+
+	fmt.Println("End of songs")
+
+	fmt.Println("")
 }
 
 func (mp *MusicPlayer) Play() string {
-	// TODO: answer here
+	if mp.Playlist.IsEmpty() {
+		return ""
+	}
+
+	song := mp.Playlist.Songs[0]
+
+	mp.Playlist.Songs = mp.Playlist.Songs[1:]
+
+	fmt.Printf("Now playing %s - %s\n", song.Singer, song.Title)
+
+	if !mp.Playlist.IsEmpty() && mp.Playlist.IsRepeatable {
+		mp.Playlist.Songs = append(mp.Playlist.Songs, song)
+	}
+
+	if mp.Playlist.IsEmpty() && mp.Playlist.IsRepeatable {
+		mp.Playlist.Songs = append(mp.Playlist.Songs, song)
+	}
+
+	return fmt.Sprintf("Now playing %s - %s", song.Singer, song.Title)
 }
 
 func (p *Playlist) Repeat() {
 	// TODO: answer here
+	p.IsRepeatable = true
+
+	fmt.Println("Repeat playlist")
+
+	fmt.Println("Songs in playlist:")
+
+	for _, song := range p.Songs {
+		fmt.Printf("%s - %s\n", song.Singer, song.Title)
+	}
+
+	fmt.Println("End of songs")
+
+	fmt.Println("")
 }
