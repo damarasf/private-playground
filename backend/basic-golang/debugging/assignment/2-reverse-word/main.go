@@ -12,8 +12,9 @@ func main() {
 	fmt.Println(res)
 
 	// Try correct answer:
-	// resCorrect := ReverseWordCorrect(arr)
-	// fmt.Println(resCorrect)
+	arr := "ruangguru"
+	resCorrect := ReverseWordCorrect(arr)
+	fmt.Println(resCorrect)
 }
 
 func ReverseWord(word string) string {
@@ -30,5 +31,14 @@ func ReverseWord(word string) string {
 }
 
 func ReverseWordCorrect(word string) string {
-	return 0 // TODO: replace this
+	n := len(word)
+	temp := []byte(word)
+
+	for i := 0; i < n/2; i++ {
+		left := i
+		right := n - i - 1
+		temp[left], temp[right] = temp[right], temp[left]
+	}
+
+	return string(temp)
 }
