@@ -33,6 +33,10 @@ func ConvertSecondToTimeString(second int) string {
 }
 
 func ConvertSecondToTimeStringCorrect(second int) string {
+	// hours := second / 3600
+	// minutes := (second - (hours*3600)) / 60
+	// seconds := second - (hours*3600) - (minutes*60)
+
 	hours := second / 3600
 	minutes := (second % 3600) / 60
 	seconds := second % 60
