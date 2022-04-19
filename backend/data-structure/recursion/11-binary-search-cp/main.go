@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	numList := []int64{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -15,6 +17,14 @@ func BinarySearch(numList []int64, key int64) int {
 
 	if low <= high {
 		// TODO: answer here
+		mid := low + (high-low)/2
+		if numList[mid] > key {
+			return BinarySearch(numList[:mid], key)
+		} else if numList[mid] < key {
+			return BinarySearch(numList[mid+1:], key)
+		} else {
+			return 1
+		}
 	}
 	return 0
 }
