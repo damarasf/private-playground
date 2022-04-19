@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	/*
@@ -17,8 +19,9 @@ func main() {
 	fmt.Println(res)
 
 	// Try correct answer:
-	// resCorrect := ConvertSecondToTimeStringCorrect(arr)
-	// fmt.Println(resCorrect)
+	arr := 30
+	resCorrect := ConvertSecondToTimeStringCorrect(arr)
+	fmt.Println(resCorrect)
 }
 
 func ConvertSecondToTimeString(second int) string {
@@ -30,5 +33,10 @@ func ConvertSecondToTimeString(second int) string {
 }
 
 func ConvertSecondToTimeStringCorrect(second int) string {
-	return "" // TODO: replace this
+	hours := second / 3600
+	minutes := (second % 3600) / 60
+	seconds := second % 60
+
+	timeString := fmt.Sprintf("%02d:%02d:%02d", hours, minutes, seconds)
+	return timeString
 }
