@@ -13,6 +13,18 @@ const numOfRequests = 1000
 //bagaimana cara membatasi data yang diproses ? hint:buffered channel
 func doubleCalculatorWorker(queue chan request, maxThroughput int, maxObservedThroughtputC chan int) {
 	// TODO: answer here
+	var wg sync.WaitGroup
+	for i := 0; i < maxThroughput; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for req := range queue {
+				req.response <- req.data * req.data
+			}
+		}()
+	}
+	wg.Wait()
+	maxObservedThroughtputC <- maxThroughput
 
 	maxObservedThroughtput := 0
 	curThroughtput := 0
