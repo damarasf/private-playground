@@ -22,4 +22,16 @@ func playMatch(i int) {
 
 func startTournament() {
 	// TODO: answer here
+	a := make(chan int)
+	for i := 0; i < 10; i++ {
+		go func(i int) {
+			playMatch(i)
+			a <- i
+		}(i)
+	}
+
+	for i := 0; i < 10; i++ {
+		<-a
+	}
+	fmt.Println("all the match finished. Total time needed:", time.Since(start))
 }
