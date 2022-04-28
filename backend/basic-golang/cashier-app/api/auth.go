@@ -41,34 +41,53 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-<<<<<<< HEAD
-	w.WriteHeader(http.StatusOK)
+	// w.WriteHeader(http.StatusOK)
 
-	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: *res}) // TODO: replace this
-=======
+	// json.NewEncoder(w).Encode(LoginSuccessResponse{Username: *res}) // TODO: replace this
 	// Task: 1. Deklarasi expiry time untuk token jwt
 	//       2. Buat claim menggunakan variable yang sudah didefinisikan diatas
 	//       3. expiry time menggunakan time millisecond
 
 	// TODO: answer here
+	expirationTime := time.Now().Add(5 * time.Minute)
+	claims := &Claims{
+		Username: username,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
 
 	// Task: Buat token menggunakan encoded claim dengan salah satu algoritma yang dipakai
 
 	// TODO: answer here
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Task: 1. Buat jwt string dari token yang sudah dibuat menggunakan JWT key yang telah dideklarasikan
 	//       2. return internal error ketika ada kesalahan ketika pembuatan JWT string
 
 	// TODO: answer here
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		encoder.Encode(AuthErrorResponse{Error: err.Error()})
+		return
+	}
 
 	// Task: Set token string kedalam cookie response
 
 	// TODO: answer here
+	cookie := http.Cookie{
+		Name:    "token",
+		Value:   tokenString,
+		Expires: expirationTime,
+	}
+	http.SetCookie(w, &cookie)
+
+	encoder.Encode(LoginSuccessResponse{Username: *res, Token: tokenString})
 
 	// Task: Return response berupa username dan token JWT yang sudah login
 
-	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: "", Token: ""}) // TODO: replace this
->>>>>>> aa60e7f439d48970d991ed24e14bd558af637223
+	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: *res, Token: tokenString}) // TODO: replace this
 }
 
 func (api *API) logout(w http.ResponseWriter, req *http.Request) {
@@ -83,7 +102,7 @@ func (api *API) logout(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	encoder.Encode(AuthErrorResponse{Error: username}) // TODO: replace this
+	encoder.Encode(AuthErrorResponse{Error: "Logout Success"}) // TODO: replace this
 }
 
 //done

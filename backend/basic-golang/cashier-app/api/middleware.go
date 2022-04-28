@@ -33,14 +33,26 @@ func (api *API) AuthMiddleWare(next http.Handler) http.Handler {
 		//       3. return bad request ketika field token tidak ada
 
 		// TODO: answer here
+		cookie, err := r.Cookie("token")
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			encoder.Encode(AuthErrorResponse{Error: err.Error()})
+			return
+		} else if cookie.Value == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			encoder.Encode(AuthErrorResponse{Error: "token is empty"})
+			return
+		}
 
 		// Task: Ambil value dari cookie token
 
 		// TODO: answer here
+		tokenString := cookie.Value
 
 		// Task: Deklarasi variable claim
 
 		// TODO: answer here
+		claim := &Claims{}
 
 		// Task: 1. parse JWT token ke dalam claim
 		//       2. return unauthorized ketika signature invalid
@@ -48,9 +60,26 @@ func (api *API) AuthMiddleWare(next http.Handler) http.Handler {
 		//       4. return unauthorized ketika token sudah tidak valid (biasanya karna token expired)
 
 		// TODO: answer here
+		token, err := jwt.ParseWithClaims(tokenString, claim, func(token *jwt.Token) (interface{}, error) {
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, jwt.ErrSignatureInvalid
+			}
+			return jwtKey, nil
+		})
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			encoder.Encode(AuthErrorResponse{Error: err.Error()})
+			return
+		}
+		if !token.Valid {
+			w.WriteHeader(http.StatusUnauthorized)
+			encoder.Encode(AuthErrorResponse{Error: "token is invalid"})
+			return
+		}
 
 		// Task: Validasi
 
-		return next.ServeHTTP(w, r) // TODO: replace this
+		ctx := context.WithValue(r.Context(), "claims", claim)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
