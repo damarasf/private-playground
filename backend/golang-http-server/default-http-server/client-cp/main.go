@@ -13,4 +13,22 @@ import (
 
 func main() {
 	// TODO: answer here
+	client := http.Client{}
+
+	resp, err := client.Get("https://www.metaweather.com/api/location/1047378/2022/05/09")
+	if err != nil {
+		fmt.Printf("Error: %s", err)
+		return
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		fmt.Printf("Error %s", err)
+		return
+	}
+
+	fmt.Printf(string(body))
 }
