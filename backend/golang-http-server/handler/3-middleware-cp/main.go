@@ -27,7 +27,15 @@ func (h TimeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func RequestMethodGetMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}) // TODO: replace this
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			log.Println("Method not allowed")
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	}) // TODO: replace this
 }
 
 func main() {
