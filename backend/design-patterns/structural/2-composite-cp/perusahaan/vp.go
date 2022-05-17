@@ -9,5 +9,13 @@ func (vp VP) GetSalary() int {
 }
 
 func (vp VP) TotalDivisonSalary() int {
-	0 // TODO: replace this
+	var total int
+	for _, employee := range vp.Subordinate {
+		totalSalaryDivision := employee.TotalDivisonSalary()
+		total += totalSalaryDivision
+	}
+
+	totalSalary := vp.GetSalary() + total
+
+	return totalSalary
 }
