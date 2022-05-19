@@ -33,9 +33,19 @@ func (db *InvoiceDB) Insert(code string, name string, address string, phone stri
 }
 
 func (db *InvoiceDB) Where(id PrimaryKey) *InvoiceRow {
-	return InvoiceRow{} // TODO: replace this
+	if row, ok := db.m[id]; ok {
+		return &row
+	}
+	return nil
 }
 
 func (db *InvoiceDB) Update(id PrimaryKey, code string, name string, address string, phone string) (*InvoiceRow, error) {
-	return nil, nil // TODO: replace this
+	if row, ok := db.m[id]; ok {
+		row.SubscriptionCode = code
+		row.CustomerName = name
+		row.Address = address
+		row.Phone = phone
+		return &row, nil
+	}
+	return nil, fmt.Errorf("Invoice not found")
 }
