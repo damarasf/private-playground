@@ -95,6 +95,11 @@ func (db *UserPhoneTable) InsertUserPhone(userID int, phoneID int) {
 func (db *PhoneTable) GetPhone(phoneID int) PhoneRow {
 	var result PhoneRow
 	// TODO: answer here
+	for i := 0; i < len(*db); i++ {
+		if (*db)[i].ID == phoneID {
+			result = (*db)[i]
+		}
+	}
 	return result
 
 }
@@ -102,5 +107,10 @@ func (db *PhoneTable) GetPhone(phoneID int) PhoneRow {
 func (db *UserTable) GetUser(userID int) UserRow {
 	var result UserRow
 	// TODO: answer here
+	for i := 0; i < len(*db); i++ {
+		if (*db)[i].ID == userID {
+			result = (*db)[i]
+		}
+	}
 	return result
 }
