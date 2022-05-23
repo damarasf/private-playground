@@ -21,6 +21,7 @@ func (r *EmployeeRepository) UpdateEmployee(updateEmployee *model.Employee) erro
 	// 1. Update the employee with the given id
 	// 2. Set the updated fields (first_name, last_name, email)
 	// TODO: answer here
+	sqlStmt = `UPDATE employees SET first_name = ?, last_name = ?, email = ? WHERE NIK = ?`
 
 	_, err := r.db.Exec(sqlStmt, updateEmployee.FirstName, updateEmployee.LastName, updateEmployee.Email, updateEmployee.NIK)
 	if err != nil {
@@ -38,6 +39,7 @@ func (r *EmployeeRepository) UpdateEmployeeEmail(nik string, email string) error
 	// 2. Set the updated fields (email)
 	
 	// TODO: answer here
+	sqlStmt = `UPDATE employees SET email = ? WHERE nik = ?`
 
 	_, err := r.db.Exec(sqlStmt, email, nik)
 	if err != nil {
