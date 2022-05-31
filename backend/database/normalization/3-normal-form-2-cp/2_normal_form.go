@@ -167,7 +167,7 @@ func checkBarangExists(kodeBarang string) (bool, error) {
 		panic(err)
 	}
 
-	sqlStmt := `SELECT COUNT(*) FROM barang WHERE kode_barang = ?;` 
+	sqlStmt := `SELECT 1 FROM barang WHERE kode_barang = ?;` 
 	// TODO: replace this
 
 	row := db.QueryRow(sqlStmt, kodeBarang)
@@ -186,7 +186,7 @@ func checkKasirExists(kodeKasir string) (bool, error) {
 		panic(err)
 	}
 
-	sqlStmt := `SELECT COUNT(*) FROM kasir WHERE kode_kasir = ?;`
+	sqlStmt := `SELECT 1 FROM kasir WHERE kode_kasir = ?;`
 	// TODO: replace this
 
 	row := db.QueryRow(sqlStmt, kodeKasir)
