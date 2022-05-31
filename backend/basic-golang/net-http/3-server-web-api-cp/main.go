@@ -19,6 +19,26 @@ type Table struct {
 
 func viewTable(w http.ResponseWriter, r *http.Request) {
 	// TODO: answer here
+	filepath := path.Join("views", "table.html")
+	tmpl, err := template.ParseFiles(filepath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	id := r.URL.Query().Get("id")
+	for _, table := range data {
+		if table.ID == id {
+			data := map[string]interface{}{
+				"title":  "Ruangguru Kampus Merdeka",
+				"table":  table,
+			}
+			if err := tmpl.Execute(w, data); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			return
+		}
+	}
+	http.Error(w, "Table not found", http.StatusNotFound)
 }
 
 var data = []Table{
