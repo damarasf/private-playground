@@ -1513,8 +1513,8 @@
         "subject": "Back End Programming",
         "course": "backend",
         "path": "backend/database/normalization/5-surrogate-key-cp",
-        "weight": 133.33333,
-        "totalTestCase": "4"
+        "weight": 100,
+        "totalTestCase": "3"
       },
       {
         "subject": "Back End Programming",
