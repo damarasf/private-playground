@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"time"
+	// "time"
 )
 
 type TransactionRepository struct {
@@ -49,9 +49,26 @@ func (u *TransactionRepository) Pay(cartItems []CartItem, amount int) (int, erro
 		// HINT: use `tx.Exec("... query ...")` instead of `u.db.Exec("... query ...")`
 		// TODO: answer here
 
+		// product.Quantity -= cartItem.Quantity
+		// _, err = tx.Exec("UPDATE products SET quantity = ? WHERE id = ?", product.Quantity, product.ID)
+		// if err != nil {
+		// 	tx.Rollback()
+		// 	return 0, err
+		// }
+		_, err = tx.Exec("UPDATE products SET quantity = quantity - ? WHERE id = ?", cartItem.Quantity, cartItem.ProductID)
+		if err != nil {
+			tx.Rollback()
+			return 0, err
+		}
+
 		// TODO: Implement SQL Query using the transaction connection to add cart item to sales table
 		// HINT: use `tx.Exec("... query ...")` instead of `u.db.Exec("... query ...")`
 		// TODO: answer here
+		_, err = tx.Exec("INSERT INTO sales (product_id, quantity, price) VALUES (?, ?, ?)", cartItem.ProductID, cartItem.Quantity, cartItem.Price)
+		if err != nil {
+			tx.Rollback()
+			return 0, err
+		}
 	}
 
 	// clear cart
